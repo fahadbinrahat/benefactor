@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="ApplicationResources" />
+
+	<package name="default" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="cachingHeadersInterceptor"
+				class="com.benefactor.controller.action.interceptors.CachingHeadersInterceptor" />
+			<interceptor-stack name="defaultSecurityStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="cachingHeadersInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="defaultSecurityStack"></default-interceptor-ref>
+
+		<action name="login" class="com.benefactor.controller.action.LoginAction">
+			<result name="success" type="chain">populateHardshipAssessmentForm
+			</result>
+			<result name="error">Login.jsp</result>
+		</action>
+		<action name="doRegister" class="com.benefactor.controller.action.RegisterAction">
+			<result name="success">Welcome.jsp</result>
+			<result name="error">Register.jsp</result>
+		</action>
+		<action name="doAssess" method="execute"
+			class="com.benefactor.controller.action.AssessHardshipAction">
+			<result name="success">Welcome.jsp</result>
+			<result name="input">Welcome.jsp</result>
+			<result name="error">Welcome.jsp</result>
+			<result name="failed">Welcome.jsp</result>
+			<result name="withheld">Welcome.jsp</result>
+			<result name="manualrefer">Welcome.jsp</result>
+		</action>
+		<action name="populateHardshipAssessmentForm" method="populate"
+			class="com.benefactor.controller.action.AssessHardshipAction">
+			<result name="populate">Welcome.jsp</result>
+			<result name="input">Login.jsp</result>
+		</action>
+		<action name="doLogout" method="execute"
+			class="com.benefactor.controller.action.LogoutAction">
+			<result name="logout">Login.jsp</result>
+		</action>
+		<action name="register">
+			<result>Register.jsp</result>
+		</action>
+	</package>
+</struts>
